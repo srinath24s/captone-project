@@ -1,6 +1,7 @@
 const { generateToken } = require("../middleware/jwtToken");
 const { encryptingPassword, decryptingPassword } = require("../middleware/password");
 const adminUser = require("../models/adminUser");
+const product = require("../models/product");
 
 const getUsers = async (req, res) => {
   try {
@@ -82,8 +83,65 @@ const loginUser = async(req, res) => {
   }
 };
 
+const addProduct = async(req,res)=>{
+  try {
+    const {name, description, price, image, rating, stocks, category, uploadedBy} = req.body;
+    if (!name || !price || !image || !stocks || !category || !uploadedBy) {
+      throw new Error('Missing required fields.');
+    }
+
+    const newProduct={
+      name,
+      description,
+      price,
+      image,
+      rating,
+      stocks,
+      category,
+      uploadedBy
+    };
+    
+    const response = await product(newProduct)
+    if(!response){
+      throw new Error(response.message);
+    }
+    response.save();
+    res.json({
+      status:"ok",
+      result:response,
+      message: 'Product added successfully.',
+    })
+
+  } catch (error) {
+    res.json(
+      { status:"Error",
+        result:error.message
+      });
+  }
+}
+
+const getProducts = async (req, res) => {
+  try {
+    const response = await product.find();
+    if(!response){
+      throw new Error("Internal database Server Issue");
+    }
+    res.json({
+      status:"ok",
+      result: response
+    })
+  } catch (error) {
+    res.json({
+      status:"Error",
+      result: error.message
+    })
+  }
+}; 
+
 module.exports = {
   getUsers,
   createUser,
-  loginUser
+  loginUser,
+  addProduct,
+  getProducts
 };

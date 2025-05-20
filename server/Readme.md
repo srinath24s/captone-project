@@ -49,7 +49,7 @@ This is the backend server for a Farmer E-commerce Application built using **Nod
     git clone https://github.com/your-username/farmer-ecommerce-server.git
     cd farmer-ecommerce-server
 
-2.  ## ** Install dependencies**
+2.  **Install dependencies**
         npm install
 
 3. **Set up environment variables**
