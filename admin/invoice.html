@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Invoice</title>
+    <style>
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            /* max-width: 900px; */
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Header Styles */
+        .invoice-header {
+            padding: 25px 30px;
+            background: #3b82f6;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .invoice-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .invoice-meta {
+            display: flex;
+            gap: 15px;
+            color: #e0e7ff;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            background: white;
+            color: #3b82f6;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* From/To Sections */
+        .address-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .address-box {
+            padding: 15px;
+        }
+        
+        .address-title {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .address-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #1e293b;
+        }
+        
+        /* Items Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        
+        .items-table thead {
+            background-color: #f1f5f9;
+        }
+        
+        .items-table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .items-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            color: #334155;
+        }
+        
+        .items-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* .text-right {
+            text-align: right;
+        } */
+        
+        /* Summary Section */
+        .summary-section {
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .summary-box {
+            width: 300px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .summary-total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        /* Notes Section */
+        .notes-section {
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .notes-title {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+            margin-left: 15px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 15px 30px;
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-text {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .address-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .invoice-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .summary-box {
+                width: 100%;
+            }
+            
+            .items-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Invoice Header -->
+        <div class="invoice-header">
+            <div>
+                <h1 class="invoice-title">TAX INVOICE</h1>
+                <div class="invoice-meta">
+                    <span>Original for Recipient</span>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 20px; font-weight: 600;">Invoice #INV-2023-108</div>
+                <div class="invoice-meta">
+                    <span>Date: 20/11/2023</span>
+                    <span>•</span>
+                    <span>Due: 20/12/2023</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- From/To Sections -->
+        <div class="address-section">
+            <div class="address-box">
+                <div class="address-title">From</div>
+                <div class="address-name">Tech Solutions India Pvt. Ltd.</div>
+                <div>45 Business Park, Andheri East</div>
+                <div>Mumbai, Maharashtra 400069</div>
+                <div style="margin-top: 10px;">
+                    <div>GSTIN: 27AABCT3519Q1Z2</div>
+                    <div>Phone: +91 9876543210</div>
+                    <div>Email: accounts@techsolutions.in</div>
+                </div>
+            </div>
+            <div class="address-box">
+                <div class="address-title">To</div>
+                <div class="address-name">Digital Marketing Agency</div>
+                <div>78 Startup Hub, Koramangala</div>
+                <div>Bengaluru, Karnataka 560034</div>
+                <div style="margin-top: 10px;">
+                    <div>GSTIN: 29AAACD1234M1Z5</div>
+                    <div>Phone: +91 8765432109</div>
+                    <div>Email: finance@digitalmarketing.com</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <div style="overflow-x: auto; padding: 0 15px;">
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>HSN/SAC</th>
+                        <th class="text-right">Qty</th>
+                        <th class="text-right">Rate (₹)</th>
+                        <th class="text-right">Amount (₹)</th>
+                    </tr>
+                </thead>
+                <tbody id="invoice-items">
+                    <!-- Items will be added by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₹0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>GST (18%):</span>
+                    <span id="tax">₹0.00</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total:</span>
+                    <span id="total">₹0.00</span>
+                </div>
+                <div style="margin-top: 15px; font-size: 14px; color: #64748b;">
+                    <div>Amount in words:</div>
+                    <div id="amount-in-words" style="font-weight: 500; color: #334155; margin-top: 5px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Info and Notes -->
+        <div class="p-6 bg-gray-50 border-t">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div>
+                    <div class="notes-title">Payment Information</div>
+                    <div style="margin-top: 10px; margin-left: 15px ; font-size: 14px; color: #475569;">
+                        <div>Bank Name: State Bank of India</div>
+                        <div>Account Name: Tech Solutions India Pvt. Ltd.</div>
+                        <div>Account Number: 123456789012</div>
+                        <div>IFSC Code: SBIN0001234</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="notes-title">Notes</div>
+                    <div style="margin-top: 10px; font-size: 14px; color: #475569;">
+                        <div>Payment should be made within 15 days of invoice date.</div>
+                        <div style="margin-top: 5px;">Late payments are subject to 1.5% monthly interest.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-text">Thank you for your business!</div>
+            <button class="btn" onclick="downloadInvoice()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Invoice
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Invoice Data
+        const invoiceData = {
+            items: [
+                { id: 1, description: 'Website Development', quantity: 1, unitPrice: 45000, hsn: '998314' },
+                { id: 2, description: 'Mobile App Development', quantity: 1, unitPrice: 75000, hsn: '998315' },
+                { id: 3, description: 'SEO Services (Monthly)', quantity: 3, unitPrice: 15000, hsn: '998439' },
+                { id: 4, description: 'Cloud Hosting (Annual)', quantity: 1, unitPrice: 24000, hsn: '998431' }
+            ],
+            taxRate: 0.18 // 18% GST
+        };
+
+        // Format currency in Indian Rupees
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2
+            }).format(amount);
+        }
+
+        // Convert number to words (simplified version)
+        function numberToWords(num) {
+            const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+            const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+            const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+            
+            // This is a simplified version - would need more logic for complete conversion
+            if (num < 10) return units[Math.floor(num)];
+            if (num < 20) return teens[Math.floor(num) - 10];
+            if (num < 100) return tens[Math.floor(num / 10)] + (num % 10 !== 0 ? ' ' + units[num % 10] : '');
+            
+            // For amounts over 100, we'll return a simplified version
+            const rupees = Math.floor(num);
+            const paise = Math.round((num - rupees) * 100);
+            let words = '₹' + rupees.toLocaleString('en-IN') + ' Rupees';
+            if (paise > 0) {
+                words += ' and ' + paise + ' Paise';
+            }
+            return words + ' only';
+        }
+
+        // Calculate and display invoice
+        function renderInvoice() {
+            const itemsContainer = document.getElementById('invoice-items');
+            let subtotal = 0;
+            
+            // Add items to table
+            invoiceData.items.forEach((item, index) => {
+                const amount = item.quantity * item.unitPrice;
+                subtotal += amount;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.description}</td>
+                    <td>${item.hsn}</td>
+                    <td class="text-right">${item.quantity}</td>
+                    <td class="text-right">${formatINR(item.unitPrice)}</td>
+                    <td class="text-right">${formatINR(amount)}</td>
+                `;
+                itemsContainer.appendChild(row);
+            });
+            
+            // Calculate totals
+            const tax = subtotal * invoiceData.taxRate;
+            const total = subtotal + tax;
+            
+            // Update summary
+            document.getElementById('subtotal').textContent = formatINR(subtotal);
+            document.getElementById('tax').textContent = formatINR(tax);
+            document.getElementById('total').textContent = formatINR(total);
+            document.getElementById('amount-in-words').textContent = numberToWords(total);
+        }
+
+        // Download invoice as PDF
+        function downloadInvoice() {
+            alert('Invoice download functionality would be implemented here');
+            // In a real implementation, you would use a library like jsPDF or html2pdf
+            // to generate and download the invoice as a PDF
+        }
+
+        // Initialize the invoice when page loads
+        window.onload = renderInvoice;
+    </script>
+</body>
+</html>

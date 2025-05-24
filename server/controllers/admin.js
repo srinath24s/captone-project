@@ -23,7 +23,7 @@ const getUsers = async (req, res) => {
 
 const createUser = async(req, res) => {
   try{
-    const {name,email,password} = req.body;
+    const {name,email,password, role} = req.body;
     if (!name || !email || !password) {
       throw new Error("Name, email, and password are required");
     }
@@ -35,7 +35,7 @@ const createUser = async(req, res) => {
     if(encryptedPassword.status === "Error"){
       throw new Error(encryptedPassword.result)
     }
-    const newUser = new adminUser({ name, email, password: encryptedPassword.result});
+    const newUser = new adminUser({ name, email, password: encryptedPassword.result, role});
     if(!newUser){
       throw new Error("Not Uploaded to Database...")
     }
@@ -51,7 +51,6 @@ const createUser = async(req, res) => {
     })
   }
 };
-
 
 const loginUser = async(req, res) => {
   try{
@@ -82,6 +81,64 @@ const loginUser = async(req, res) => {
     })
   }
 };
+
+const editUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, role } = req.body;
+
+    const updatedUser = await adminUser.findOneAndUpdate(
+      { id },
+      { name, email, role },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.json({
+        status: "Error",
+        result: "User not found"
+      });
+    }
+
+    res.json({
+      status: "ok",
+      result: "Updated User Successfully"
+    });
+
+  } catch (error) {
+    res.json({
+      status: "Error",
+      result: error.message
+    });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedUser = await adminUser.findOneAndDelete({ id });
+
+    if (!deletedUser) {
+      return res.json({
+        status: "Error",
+        result: "User not found"
+      });
+    }
+
+    res.json({
+      status: "ok",
+      result: "User deleted successfully"
+    });
+
+  } catch (error) {
+    res.json({
+      status: "Error",
+      result: error.message
+    });
+  }
+};
+
 
 const addProduct = async(req,res)=>{
   try {
@@ -142,6 +199,8 @@ module.exports = {
   getUsers,
   createUser,
   loginUser,
+  editUser,
+  deleteUser,
   addProduct,
   getProducts
 };

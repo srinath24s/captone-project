@@ -10,6 +10,7 @@
     body:{
         name:"Admin",
         email:"admin@gmail.com",
+        role:"admin",
         password:"admin@123"
     }
 
@@ -26,8 +27,28 @@
         status:'ok',
         result:"token..."
     }
+4. /admin/user/:id
+    method: put
+    body:{
+        name:"Admin",
+        email:"admin@gmail.com",
+        role:"admin"
+    }
 
-4. /admin/addproduct
+    response : "Updated User Successfully"
+
+5. /admin/user/:id
+    method: delete
+    body:{
+        name:"Admin",
+        email:"admin@gmail.com",
+        role:"admin"
+    }
+
+    response : "User deleted Successfully"
+
+
+6. /admin/addproduct
     method: Post
     body:{
         "name": "Red T-Shirt",
@@ -57,7 +78,7 @@
         "message": "Product added successfully."
     }
 
-5. /admin/products
+7. /admin/products
     method: Get
 
     response : fetches all products in array format

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Farmers Mart - Wishlist</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f6f9f9;
+      color: #333;
+      /* max-width: 350px; */
+      margin: 0 auto;
+      padding: 1rem;
+      height: 600px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    header {
+      text-align: center;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #d1d8db;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #2e7d32;
+    }
+
+    main {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      margin-top: 1rem;
+      padding-right: 0.25rem;
+    }
+
+    ul.wishlist-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    ul.wishlist-items li {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 6px 8px -4px rgba(46, 125, 50, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      margin-left: 1rem;
+      overflow-wrap: break-word;
+    }
+
+    .item-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #1b5e20;
+      margin-bottom: 0.3rem;
+    }
+
+    .item-price {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* Button container flex for horizontal layout */
+    li > div:last-child {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      min-width: 140px;
+    }
+
+    button.wishlist-remove-btn,
+    button.wishlist-move-btn {
+      font-size: 0.85rem;
+      border: none;
+      border-radius: 5px;
+      padding: 0.4rem 0.6rem;
+      user-select: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+      /* Ensure roughly half width */
+      flex-grow: 1;
+    }
+
+    button.wishlist-remove-btn {
+      background: #ef5350;
+      color: white;
+    }
+    button.wishlist-remove-btn:hover {
+      background-color: #b71c1c;
+    }
+
+    button.wishlist-move-btn {
+      background: #2e7d32;
+      color: white;
+    }
+    button.wishlist-move-btn:hover {
+      background-color: #1b5e20;
+    }
+
+    footer {
+      border-top: 2px solid #d1d8db;
+      padding-top: 1rem;
+      text-align: center;
+      background: #e8f5e9;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      user-select: none;
+      flex-wrap: wrap;
+    }
+
+    button#clear-wishlist,
+    button#move-all-to-cart {
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      font-size: 1rem;
+      transition: background-color 0.2s ease-in-out;
+      min-width: 140px;
+    }
+
+    button#clear-wishlist {
+      background: #ef5350;
+      color: white;
+    }
+    button#clear-wishlist:hover {
+      background-color: #b71c1c;
+    }
+
+    button#move-all-to-cart {
+      background: #2e7d32;
+      color: white;
+    }
+    button#move-all-to-cart:hover {
+      background-color: #1b5e20;
+    }
+
+    main::-webkit-scrollbar {
+      width: 6px;
+    }
+    main::-webkit-scrollbar-thumb {
+      background-color: #a5d6a7;
+      border-radius: 3px;
+    }
+    main {
+      scrollbar-width: thin;
+      scrollbar-color: #a5d6a7 transparent;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Farmers Mart Wishlist
+  </header>
+  <main>
+    <ul class="wishlist-items" aria-live="polite" aria-label="Items in your wishlist">
+      <!-- Wishlist items go here -->
+    </ul>
+  </main>
+  <footer>
+    <button id="clear-wishlist" aria-label="Clear all items from wishlist">Clear Wishlist</button>
+    <button id="move-all-to-cart" aria-label="Move all wishlist items to cart">Move All To Cart</button>
+  </footer>
+
+  <script>
+    const USD_TO_INR = 84.91;
+
+    // Sample wishlist items with ten items added
+    const sampleWishlistItems = [
+      { id: 'w1', name: 'Fresh Strawberries (500g)', price: 5.50 },
+      { id: 'w2', name: 'Organic Avocados (each)', price: 2.75 },
+      { id: 'w3', name: 'Local Honey Jar (300g)', price: 6.50 },
+      { id: 'w4', name: 'Fresh Basil (bunch)', price: 1.99 },
+      { id: 'w5', name: 'Cherry Tomatoes (250g)', price: 3.25 },
+      { id: 'w6', name: 'Almonds (200g)', price: 7.80 },
+      { id: 'w7', name: 'Organic Ginger (100g)', price: 1.20 },
+      { id: 'w8', name: 'Fresh Mint Leaves (bunch)', price: 1.15 },
+      { id: 'w9', name: 'Raw Turmeric Powder (100g)', price: 4.00 },
+      { id: 'w10', name: 'Sweet Corn (each)', price: 1.75 }
+    ];
+
+    // Get wishlist and cart from localStorage or empty arrays
+    let wishlist = JSON.parse(localStorage.getItem('farmersMartWishlist')) || [];
+    let cart = JSON.parse(localStorage.getItem('farmersMartCart')) || [];
+
+    // Initialize wishlist if empty with samples
+    if (wishlist.length === 0) {
+      wishlist = sampleWishlistItems.map(item => ({ ...item, quantity: 1 }));
+      saveWishlist();
+    }
+
+    const wishlistContainer = document.querySelector('.wishlist-items');
+    const clearWishlistBtn = document.getElementById('clear-wishlist');
+    const moveAllToCartBtn = document.getElementById('move-all-to-cart');
+
+    // Save wishlist to localStorage
+    function saveWishlist() {
+      localStorage.setItem('farmersMartWishlist', JSON.stringify(wishlist));
+    }
+
+    // Save cart to localStorage
+    function saveCart() {
+      localStorage.setItem('farmersMartCart', JSON.stringify(cart));
+    }
+
+    // Format price to INR string
+    function formatPriceINR(price) {
+      return '₹' + (price * USD_TO_INR).toFixed(2);
+    }
+
+    // Render wishlist items
+    function renderWishlist() {
+      wishlistContainer.innerHTML = '';
+
+      if (wishlist.length === 0) {
+        wishlistContainer.innerHTML = '<li style="text-align:center; color: #777; padding: 2rem 0;">Your wishlist is empty.</li>';
+        return;
+      }
+
+      wishlist.forEach(item => {
+        const li = document.createElement('li');
+        li.setAttribute('data-id', item.id);
+        li.innerHTML = `
+          <div class="item-info">
+            <div class="item-name" title="${item.name}">${item.name}</div>
+            <div class="item-price">${formatPriceINR(item.price)}</div>
+          </div>
+          <div>
+            <button class="wishlist-move-btn" aria-label="Move ${item.name} to cart">Move to Cart</button>
+            <button class="wishlist-remove-btn" aria-label="Remove ${item.name} from wishlist">Remove</button>
+          </div>
+        `;
+        wishlistContainer.appendChild(li);
+      });
+    }
+
+    // Remove item from wishlist by id
+    function removeWishlistItem(id) {
+      wishlist = wishlist.filter(item => item.id !== id);
+      saveWishlist();
+      renderWishlist();
+    }
+
+    // Move item from wishlist to cart by id
+    function moveWishlistItemToCart(id) {
+      // Find wishlist item
+      const wItemIndex = wishlist.findIndex(item => item.id === id);
+      if (wItemIndex === -1) return;
+
+      const [item] = wishlist.splice(wItemIndex, 1);
+
+      // Check if item already in cart
+      const cartItemIndex = cart.findIndex(cItem => cItem.id === item.id);
+      if (cartItemIndex !== -1) {
+        // Increment quantity in cart
+        cart[cartItemIndex].quantity += item.quantity;
+      } else {
+        cart.push(item);
+      }
+
+      saveWishlist();
+      saveCart();
+      renderWishlist();
+    }
+
+    // Clear wishlist entirely
+    function clearWishlist() {
+      if(confirm('Are you sure you want to clear your entire wishlist?')) {
+        wishlist = [];
+        saveWishlist();
+        renderWishlist();
+      }
+    }
+
+    // Move all wishlist items to cart
+    function moveAllToCart() {
+      if(wishlist.length === 0) {
+        alert('Your wishlist is empty.');
+        return;
+      }
+      wishlist.forEach(item => {
+        const cartItemIndex = cart.findIndex(cItem => cItem.id === item.id);
+        if(cartItemIndex !== -1) {
+          cart[cartItemIndex].quantity += item.quantity;
+        } else {
+          cart.push(item);
+        }
+      });
+
+      wishlist = [];
+      saveWishlist();
+      saveCart();
+      renderWishlist();
+      alert('All wishlist items moved to cart.');
+    }
+
+    // Event delegation for buttons
+    wishlistContainer.addEventListener('click', e => {
+      const li = e.target.closest('li');
+      if (!li) return;
+      const id = li.getAttribute('data-id');
+
+      if (e.target.classList.contains('wishlist-remove-btn')) {
+        removeWishlistItem(id);
+      } else if (e.target.classList.contains('wishlist-move-btn')) {
+        moveWishlistItemToCart(id);
+      }
+    });
+
+    clearWishlistBtn.addEventListener('click', clearWishlist);
+    moveAllToCartBtn.addEventListener('click', moveAllToCart);
+
+    // Initial render
+    renderWishlist();
+  </script>
+</body>
+</html>

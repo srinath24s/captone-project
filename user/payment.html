@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment</title>
+    <style>
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* background-color: green; */
+        }
+        
+        body {
+            /* background-color: #f5f7fa; */
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #10b981;
+            font-weight: 500;
+        }
+        
+        /* Main Layout */
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+        
+        /* Payment Methods */
+        .payment-methods {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        .payment-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            gap: 5px;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #64748b;
+            border-bottom: 2px solid transparent;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .tab.active {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
+        .payment-form {
+            display: none;
+        }
+        
+        .payment-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .upi-apps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .upi-app {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upi-app:hover {
+            border-color: #3b82f6;
+        }
+        
+        .upi-app img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+        
+        .upi-app-name {
+            font-size: 12px;
+            color: #475569;
+        }
+        
+        .netbanking-banks {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .bank-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .bank-option:hover {
+            border-color: #3b82f6;
+        }
+        
+        .bank-logo {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+        
+        .bank-name {
+            font-size: 14px;
+            color: #1e293b;
+        }
+        
+        /* EMI Options */
+        .emi-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .emi-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .emi-option:hover {
+            border-color: #3b82f6;
+        }
+        
+        .emi-details {
+            font-size: 14px;
+        }
+        
+        .emi-tenure {
+            font-weight: 500;
+        }
+        
+        .emi-amount {
+            color: #475569;
+            font-size: 13px;
+        }
+        
+        .emi-interest {
+            font-size: 12px;
+            color: #10b981;
+        }
+        
+        /* COD Section */
+        .cod-section {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .cod-icon {
+            font-size: 40px;
+            width: 60px;
+            height: 60px;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        
+        .cod-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+        
+        .cod-description {
+            color: #64748b;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        /* Order Summary */
+        .order-summary {
+            /* background: white; */
+            /* border-radius: 10px; */
+            /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
+            padding: 25px;
+            align-self: flex-start;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .order-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        .order-items {
+            margin-bottom: 20px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #475569;
+        }
+        
+        .order-total {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .grand-total {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        /* Pay Button */
+        .pay-button {
+            width: 100%;
+            padding: 14px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+        
+        .pay-button:hover {
+            background-color: #2563eb;
+        }
+        
+        .cod-button {
+            background-color: #10b981;
+        }
+        
+        .cod-button:hover {
+            background-color: #059669;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-summary {
+                position: static;
+            }
+            
+            .card-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-tabs {
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">MyStore</div>
+            <div class="secure-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>100% Secure Payments</span>
+            </div>
+        </div>
+        
+        <div class="payment-container">
+            <div class="payment-methods">
+                <h2 class="section-title">Payment Methods</h2>
+                
+                <div class="payment-tabs">
+                    <div class="tab active" data-tab="card">Credit/Debit Card</div>
+                    <div class="tab" data-tab="upi">UPI</div>
+                    <div class="tab" data-tab="netbanking">Net Banking</div>
+                    <div class="tab" data-tab="emi">EMI</div>
+                    <div class="tab" data-tab="cod">Cash on Delivery</div>
+                </div>
+                
+                <!-- Card Payment Form -->
+                <div class="payment-form active" id="card-form">
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Name on Card</label>
+                        <input type="text" class="form-input" placeholder="John Doe">
+                    </div>
+                    
+                    <div class="card-details">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" class="form-input" placeholder="MM/YY">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="password" class="form-input" placeholder="•••" maxlength="3">
+                        </div>
+                    </div>
+                    
+                    <button class="pay-button" id="card-pay-button">Pay ₹1,899.00</button>
+                </div>
+                
+                <!-- UPI Payment Form -->
+                <div class="payment-form" id="upi-form">
+                    <div class="form-group">
+                        <label class="form-label">UPI ID</label>
+                        <input type="text" class="form-input" placeholder="yourname@upi">
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Or pay with UPI apps</label>
+                        <div class="upi-apps">
+                            <div class="upi-app">
+                                <img src="https://via.placeholder.com/40?text=GPay" alt="Google Pay">
+                                <div class="upi-app-name">Google Pay</div>
+                            </div>
+                            <div class="upi-app">
+                                <img src="https://via.placeholder.com/40?text=PhonePe" alt="PhonePe">
+                                <div class="upi-app-name">PhonePe</div>
+                            </div>
+                            <div class="upi-app">
+                                <img src="https://via.placeholder.com/40?text=Paytm" alt="Paytm">
+                                <div class="upi-app-name">Paytm</div>
+                            </div>
+                            <div class="upi-app">
+                                <img src="https://via.placeholder.com/40?text=BHIM" alt="BHIM">
+                                <div class="upi-app-name">BHIM</div>
+                            </div>
+                            <div class="upi-app">
+                                <img src="https://via.placeholder.com/40?text=Amazon" alt="Amazon Pay">
+                                <div class="upi-app-name">Amazon Pay</div>
+                            </div>
+                            <div class="upi-app">
+                                <img src="https://via.placeholder.com/40?text=Other" alt="Other UPI">
+                                <div class="upi-app-name">Other UPI</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="pay-button" id="upi-pay-button">Pay ₹1,899.00</button>
+                </div>
+                
+                <!-- Net Banking Form -->
+                <div class="payment-form" id="netbanking-form">
+                    <div class="form-group">
+                        <label class="form-label">Select your bank</label>
+                        <div class="netbanking-banks">
+                            <div class="bank-option">
+                                <img src="https://via.placeholder.com/30?text=SBI" alt="SBI" class="bank-logo">
+                                <div class="bank-name">State Bank of India</div>
+                            </div>
+                            <div class="bank-option">
+                                <img src="https://via.placeholder.com/30?text=HDFC" alt="HDFC" class="bank-logo">
+                                <div class="bank-name">HDFC Bank</div>
+                            </div>
+                            <div class="bank-option">
+                                <img src="https://via.placeholder.com/30?text=ICICI" alt="ICICI" class="bank-logo">
+                                <div class="bank-name">ICICI Bank</div>
+                            </div>
+                            <div class="bank-option">
+                                <img src="https://via.placeholder.com/30?text=Axis" alt="Axis" class="bank-logo">
+                                <div class="bank-name">Axis Bank</div>
+                            </div>
+                            <div class="bank-option">
+                                <img src="https://via.placeholder.com/30?text=Other" alt="Other" class="bank-logo">
+                                <div class="bank-name">Other Bank</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="pay-button" id="netbanking-pay-button">Pay ₹1,899.00</button>
+                </div>
+                
+                <!-- EMI Options -->
+                <div class="payment-form" id="emi-form">
+                    <div class="form-group">
+                        <label class="form-label">Select your bank for EMI</label>
+                        <select class="form-input">
+                            <option value="">Select Bank</option>
+                            <option value="hdfc">HDFC Bank</option>
+                            <option value="icici">ICICI Bank</option>
+                            <option value="sbi">SBI Bank</option>
+                            <option value="axis">Axis Bank</option>
+                            <option value="kotak">Kotak Mahindra Bank</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Select EMI Tenure</label>
+                        <div class="emi-options">
+                            <div class="emi-option">
+                                <div class="emi-details">
+                                    <div class="emi-tenure">3 Months</div>
+                                    <div class="emi-amount">₹633.00/month</div>
+                                </div>
+                                <div class="emi-interest">No Cost EMI</div>
+                            </div>
+                            <div class="emi-option">
+                                <div class="emi-details">
+                                    <div class="emi-tenure">6 Months</div>
+                                    <div class="emi-amount">₹316.50/month</div>
+                                </div>
+                                <div class="emi-interest">No Cost EMI</div>
+                            </div>
+                            <div class="emi-option">
+                                <div class="emi-details">
+                                    <div class="emi-tenure">9 Months</div>
+                                    <div class="emi-amount">₹211.00/month</div>
+                                </div>
+                                <div class="emi-interest">Interest: 14% p.a.</div>
+                            </div>
+                            <div class="emi-option">
+                                <div class="emi-details">
+                                    <div class="emi-tenure">12 Months</div>
+                                    <div class="emi-amount">₹158.25/month</div>
+                                </div>
+                                <div class="emi-interest">Interest: 14% p.a.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="pay-button" id="emi-pay-button">Pay ₹633.00 (First EMI)</button>
+                </div>
+                
+                <!-- Cash on Delivery -->
+                <div class="payment-form" id="cod-form">
+                    <div class="cod-section">
+                        <div class="cod-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h3 class="cod-title">Cash on Delivery</h3>
+                        <p class="cod-description">Pay cash when your order is delivered. Additional ₹50 COD charge may apply.</p>
+                        
+                        <button class="pay-button cod-button" id="cod-button">Place Order (Pay ₹1,949.00 on Delivery)</button>
+                        
+                        <p style="font-size: 12px; color: #64748b; margin-top: 15px;">
+                            Note: Please keep exact change ready for the delivery executive.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-summary">
+                <h2 class="order-title">Order Summary</h2>
+                
+                <div class="order-items">
+                    <div class="order-item">
+                        <span>Premium Plan (Monthly)</span>
+                        <span>₹1,499.00</span>
+                    </div>
+                    <div class="order-item">
+                        <span>Tax (18% GST)</span>
+                        <span>₹269.82</span>
+                    </div>
+                    <div class="order-item">
+                        <span>Convenience Fee</span>
+                        <span>₹130.18</span>
+                    </div>
+                    <div class="order-item" id="cod-charge" style="display: none;">
+                        <span>COD Charge</span>
+                        <span>₹50.00</span>
+                    </div>
+                </div>
+                
+                <div class="order-total">
+                    <div class="total-row grand-total">
+                        <span>Total Amount</span>
+                        <span id="total-amount">₹1,899.00</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; font-size: 12px; color: #64748b; line-height: 1.5;">
+                    <p>By completing your purchase, you agree to our <a href="#" style="color: #3b82f6;">Terms of Service</a> and <a href="#" style="color: #3b82f6;">Privacy Policy</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        const forms = document.querySelectorAll('.payment-form');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and forms
+                tabs.forEach(t => t.classList.remove('active'));
+                forms.forEach(f => f.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding form
+                tab.classList.add('active');
+                const formId = tab.getAttribute('data-tab') + '-form';
+                document.getElementById(formId).classList.add('active');
+                
+                // Update COD charge visibility
+                const codCharge = document.getElementById('cod-charge');
+                const totalAmount = document.getElementById('total-amount');
+                
+                if (formId === 'cod-form') {
+                    codCharge.style.display = 'flex';
+                    totalAmount.textContent = '₹1,949.00';
+                } else {
+                    codCharge.style.display = 'none';
+                    totalAmount.textContent = '₹1,899.00';
+                }
+            });
+        });
+        
+        // Format card number input
+        const cardNumberInput = document.querySelector('input[placeholder="1234 5678 9012 3456"]');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', function(e) {
+                // Remove all non-digit characters
+                let value = this.value.replace(/\D/g, '');
+                
+                // Add space after every 4 digits
+                value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+                
+                // Update the input value
+                this.value = value;
+            });
+        }
+        
+        // Format expiry date input
+        const expiryInput = document.querySelector('input[placeholder="MM/YY"]');
+        if (expiryInput) {
+            expiryInput.addEventListener('input', function(e) {
+                // Remove all non-digit characters
+                let value = this.value.replace(/\D/g, '');
+                
+                // Add slash after 2 digits
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                
+                // Update the input value
+                this.value = value;
+            });
+        }
+        
+        // Payment button click handlers
+        document.getElementById('card-pay-button')?.addEventListener('click', processPayment);
+        document.getElementById('upi-pay-button')?.addEventListener('click', processPayment);
+        document.getElementById('netbanking-pay-button')?.addEventListener('click', processPayment);
+        document.getElementById('emi-pay-button')?.addEventListener('click', processEMIPayment);
+        document.getElementById('cod-button')?.addEventListener('click', processCOD);
+        
+        function processPayment() {
+            // In a real implementation, this would process the payment
+            alert('Payment processing would be implemented here');
+            
+            // For demo purposes, we'll simulate a successful payment
+            setTimeout(() => {
+                alert('Payment successful! Thank you for your purchase.');
+            }, 1500);
+        }
+        
+        function processEMIPayment() {
+            alert('EMI payment processing would be implemented here');
+            
+            setTimeout(() => {
+                alert('EMI payment initiated successfully! First EMI of ₹633.00 will be charged.');
+            }, 1500);
+        }
+        
+        function processCOD() {
+            alert('Cash on Delivery order placed successfully!');
+            
+            setTimeout(() => {
+                alert('Your order has been confirmed. Please pay ₹1,949.00 when the delivery executive arrives.');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

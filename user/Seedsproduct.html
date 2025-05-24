@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Farmers Mart - Products</title>
+<style>
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f9f6;
+    color: #2e3a2f;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  header {
+    background: #4caf50;
+    color: white;
+    padding: 1.2rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .container {
+    /* max-width: 900px; */
+    margin: auto;
+    padding: 1.5rem;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+  }
+  @media (max-width: 768px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .container {
+      max-width: 600px;
+      padding: 1rem;
+    }
+    header {
+      font-size: 1.5rem;
+      padding: 1rem;
+    }
+  }
+  @media (max-width: 400px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+    .container {
+      max-width: 350px;
+      padding: 1rem;
+    }
+    header {
+      font-size: 1.2rem;
+      padding: 1rem;
+    }
+  }
+  .product-card {
+    position: relative;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 280px;
+    transition: box-shadow 0.3s ease;
+  }
+  .product-card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  }
+  .product-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-bottom: 1px solid #e0e7e1;
+  }
+  .favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+  }
+  .favorite-btn:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+  .favorite-icon {
+    width: 22px;
+    height: 22px;
+    fill: #c4c4c4;
+    transition: fill 0.3s ease;
+  }
+  .favorite-btn.active .favorite-icon {
+    fill: #e53935;
+  }
+  .product-info {
+    padding: 0.8rem 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .product-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    color: #3b4a36;
+  }
+  .product-price {
+    color: #4caf50;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  button.add-to-cart {
+    background: #4caf50;
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+  }
+  button.add-to-cart:hover,
+  button.add-to-cart:focus {
+    background: #388e3c;
+    outline: none;
+  }
+  footer {
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    color: #7a8a77;
+  }
+</style>
+</head>
+<body>
+<header>Farmers Mart - Products</header>
+<div class="container">
+  <div class="product-grid" id="productGrid">
+    <!-- Products will be dynamically inserted here -->
+  </div>
+</div>
+<footer>© 2024 Farmers Mart</footer>
+<script>
+  const products = [
+    {
+      id: 1,
+      name: 'paddy seeds',
+      price: 799,
+      image: 'https://5.imimg.com/data5/SELLER/Default/2021/6/LQ/ZD/AX/98111715/unnat-1010-research-paddy-seed-500x500.jpg',
+    },
+    {
+      id: 2,
+      name: 'mix vegetable seeds',
+      price: 599,
+      image: 'https://mir-s3-cdn-cf.behance.net/projects/404/654223155277201.Y3JvcCwyODU4LDIyMzUsMCwzNTM.jpg',
+    },
+    {
+      id: 3,
+      name: 'sunflower seeds',
+      price: 848,
+      image: 'https://m.media-amazon.com/images/I/71lLH2-136L._SX679_.jpg',
+    },
+    {
+      id: 4,
+      name: ' Wheat Seeds',
+      price: 1400,
+      image: 'https://narmadeseeds.com/wp-content/uploads/2024/02/Untitled-design-2024-02-14T041041.048.png',
+    },
+    {
+      id: 5,
+      name: 'sweet corn seeds',
+      price: 1550,
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbAITBGaJkyiRyBqlgSsvLDcaoA-0vwAqqWQ&s',
+    },
+    {
+      id: 6,
+      name: 'pea seeds',
+      price: 250,
+      image: 'https://i.pinimg.com/736x/4c/51/ab/4c51aba06d3315e103b10a21256e0e80.jpg',
+    }
+  ];
+  const productGrid = document.getElementById('productGrid');
+
+  function createFavoriteButton(productId) {
+    const btn = document.createElement('button');
+    btn.className = 'favorite-btn';
+    btn.setAttribute('aria-label', 'Toggle favorite');
+    btn.title = 'Add to favorites';
+
+    btn.innerHTML = `
+      <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    `;
+
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      // Toggle favorite logic can be expanded here (e.g., save to localStorage)
+      const isFav = btn.classList.contains('active');
+      if (isFav) {
+        btn.title = 'Remove from favorites';
+      } else {
+        btn.title = 'Add to favorites';
+      }
+    });
+
+    return btn;
+  }
+
+  function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+
+    // Favorite button
+    const favBtn = createFavoriteButton(product.id);
+    card.appendChild(favBtn);
+
+    const img = document.createElement('img');
+    img.className = 'product-image';
+    img.src = product.image;
+    img.alt = product.name;
+
+    const info = document.createElement('div');
+    info.className = 'product-info';
+
+    const name = document.createElement('div');
+    name.className = 'product-name';
+    name.textContent = product.name;
+
+    const price = document.createElement('div');
+    price.className = 'product-price';
+    price.textContent = '₹' + product.price.toFixed(2);
+
+    const button = document.createElement('button');
+    button.className = 'add-to-cart';
+    button.textContent = 'Add to Cart';
+    button.addEventListener('click', () => {
+      alert(`Added "${product.name}" to cart.`);
+    });
+
+    info.appendChild(name);
+    info.appendChild(price);
+    info.appendChild(button);
+
+    card.appendChild(img);
+    card.appendChild(info);
+
+    return card;
+  }
+
+  products.forEach(product => {
+    const card = createProductCard(product);
+    productGrid.appendChild(card);
+  });
+</script>
+</body>
+</html>
+

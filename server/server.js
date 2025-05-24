@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/dbconnection');
 const adminRoutes = require('./Routes/admin');
+const userRoutes = require('./Routes/user');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -14,6 +15,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/admin', adminRoutes);
+app.use('/user', userRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

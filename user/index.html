@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Farmers Market - Fresh Local Produce Delivered</title>
+<style>
+  /* Reset and base styles */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #eef6f2;
+    color: #2b3a2e;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  a {
+    color: #2f855a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover, a:focus {
+    color: #276749;
+    outline: none;
+  }
+  button {
+    background-color: #38a169;
+    color: white;
+    border: none;
+    font-weight: 700;
+    padding: 0.75em 1.75em;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(56,161,105,0.3);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  button:hover, button:focus {
+    background-color: #2f855a;
+    box-shadow: 0 6px 12px rgba(47,133,90,0.4);
+    outline: none;
+  }
+  .container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  header {
+    background: #fff;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5rem 1rem;
+  }
+  /* Header single line layout */
+  .header-line {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .logo {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #276749;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .search-form {
+    flex-grow: 1;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+  }
+  .search-input {
+    flex-grow: 1;
+    padding: 0.5em 0.75em;
+    border: 2px solid #38a169;
+    border-right: none;
+    border-radius: 0.375rem 0 0 0.375rem;
+    font-size: 1rem;
+    color: #2b3a2e;
+    outline-offset: 2px;
+    transition: border-color 0.3s ease;
+  }
+  .search-input:focus {
+    border-color: #2f855a;
+  }
+  .search-button {
+    background-color: #38a169;
+    border: 2px solid #38a169;
+    border-left: none;
+    border-radius: 0 0.375rem 0.375rem 0;
+    color: white;
+    padding: 0.55em 1em;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+  .search-button:hover, .search-button:focus {
+    background-color: #2f855a;
+    border-color: #2f855a;
+    outline: none;
+  }
+  .search-button svg {
+    width: 1.2em;
+    height: 1.2em;
+    fill: currentColor;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    color: #276749;
+    text-transform: uppercase;
+  }
+  nav a:hover {
+    color: #1c4532;
+  }
+
+  /* New white box section */
+  .white-box {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 8px 20px rgba(39, 103, 73, 0.15);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .white-box h2 {
+    font-size: 1.8rem;
+    color: #276749;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .white-box p {
+    font-size: 1.1rem;
+    color: #3a4a3c;
+  }
+
+  /* Hero Section */
+  .hero {
+    background: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+    padding: 4rem 1rem 5rem;
+    position: relative;
+    margin-top: 1rem;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 68, 30, 0.6);
+    border-radius: 8px;
+    z-index: 0;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  }
+  .hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  /* Features Section */
+  #features {
+    margin: 3rem 0;
+    display: grid;
+    gap: 1.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  .feature-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.8rem 1.5rem;
+    box-shadow: 0 6px 18px rgb(15 68 30 / 0.15);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgb(15 68 30 / 0.25);
+  }
+  .feature-icon {
+    font-size: 3rem;
+    color: #38a169;
+    margin-bottom: 1rem;
+  }
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #22543d;
+  }
+  .feature-desc {
+    font-size: 1rem;
+    color: #4a5568;
+  }
+
+  /* Call To Action */
+  .call-to-action {
+    background: #276749;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    padding: 2.5rem 1rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 8px 20px rgb(39 103 73 / 0.4);
+  }
+  .call-to-action h2 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .call-to-action button {
+    font-size: 1.1rem;
+  }
+
+  /* New container section - testimonials */
+  .testimonial-section {
+    background: #fff;
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 8px 20px rgba(15, 68, 30, 0.15);
+    color: #2b3a2e;
+  }
+  .testimonial-section h2 {
+    font-weight: 700;
+    font-size: 1.9rem;
+    color: #276749;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .testimonial {
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+    border-left: 4px solid #38a169;
+  }
+  .testimonial-author {
+    font-weight: 700;
+    color: #22543d;
+    margin-bottom: 1.5rem;
+    text-align: right;
+  }
+
+  /* Footer */
+  footer {
+    background: #1a202c;
+    color: #a0aec0;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 1.5rem 1rem;
+  }
+  .footer-socials {
+    margin-bottom: 0.75rem;
+  }
+  .footer-socials a {
+    color: #a0aec0;
+    margin: 0 0.7rem;
+    font-size: 1.3rem;
+    transition: color 0.3s ease;
+  }
+  .footer-socials a:hover {
+    color: #38a169;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .hero h1 {
+      font-size: 1.8rem;
+    }
+    .hero p {
+      font-size: 1rem;
+    }
+    .header-line {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+    .logo {
+      order: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 1.6rem;
+    }
+    .search-form {
+      order: 1;
+      max-width: 100%;
+      flex-grow: 1;
+      width: 100%;
+    }
+    nav {
+      order: 2;
+      width: 100%;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+    nav ul {
+      justify-content: center;
+      gap: 1rem;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .white-box {
+      margin: 1.5rem 0;
+      padding: 1.5rem 1rem;
+    }
+    .testimonial-section {
+      margin: 2rem 0 3rem;
+      padding: 1.5rem 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="container header-line">
+    <div class="logo" aria-label="Farmers Market logo">Farmers Mart</div>
+    <form class="search-form" role="search" onsubmit="handleSearch(event)" aria-label="Search farm produce">
+      <input type="search" class="search-input" placeholder="Search produce..." aria-label="Search produce" required />
+      <button type="submit" class="search-button" aria-label="Submit search">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+          <path d="M21 20l-5.6-5.6a7 7 0 10-1.4 1.4L20 21zM10 16a6 6 0 110-12 6 6 0 010 12z"></path>
+        </svg>
+      </button>
+    </form>
+    <nav>
+      <ul>
+        <li><a href="./wishlist.html">❤️</a></li>
+        <li><a href="./cart.html">🛒</a></li>
+        <li><a href="./sigin.html">🤵🏻</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="container" role="main">
+  <section class="hero" aria-label="Hero section">
+    <div class="hero-content">
+      <h1>Farmers & Local Farm Produce Delivered Directly</h1>
+      <p>Supporting farmers and bringing wholesome prices</p>
+      <!-- <button onclick="alert('Welcome to Farmers Market! Start shopping now!')">Shop Now</button> -->
+    </div>
+  </section>
+
+  <section class="white-box" aria-label="Special announcement or promotion">
+    <h2> Up to 25% Off Select Organics!</h2>
+    <p> amazing prices this spring season. Limited time offer!</p>
+  </section>
+
+  <section id="features" aria-label="Features section">
+    <div class="feature-card" tabindex="0">
+      <div class="feature-icon" aria-hidden="true" ><a href="./Seedsproduct.html" >🌾</a></div>
+      <h3 class="feature-title">Seeds</h3>
+      <p class="feature-desc">Handpicked produce delivered fresh from local farms to your doorstep.</p>
+    </div>
+    <div class="feature-card" tabindex="0">
+      <div class="feature-icon" aria-hidden="true" ><a href="./Fertilizersproduct.html">♻️</a></div>
+      <h3 class="feature-title">Fertilizers</h3>
+      <p class="feature-desc">plant growth by providing essential nutrients</p>
+    </div>
+    <div class="feature-card" tabindex="0">
+      <div class="feature-icon" aria-hidden="true"><a href="./pesticidesproduct.html">🦗</a></div>
+      <h3 class="feature-title">pesticides</h3>
+      <p class="feature-desc">Control pests and diseases,Kill or deter pests</p>
+    </div>
+    <div class="feature-card" tabindex="0">
+        <div class="feature-icon" aria-hidden="true"><a href="./machineryproduct.html">🚜</a></div>
+        <h3 class="feature-title">machinery</h3>
+        <p class="feature-desc">improve efficiency and productivity</p>
+      </div>
+  </section>
+
+  <!-- <section id="about" class="call-to-action" aria-label="Our Mission section">
+    <h2>Our Mission</h2>
+    <p>We strive to build a sustainable community where farmers thrive and customers enjoy the freshest, healthiest food available.</p>
+    <button onclick="alert('Join our community! Sign up today.')">Get Started</button>
+  </section>
+
+  <section class="testimonial-section" aria-label="Testimonials section">
+    <h2>What Our Customers Say</h2>
+    <blockquote class="testimonial">
+      "I love the freshness and quality of the produce. Shopping here helps me support local farmers directly!"
+    </blockquote>
+    <div class="testimonial-author">— Sarah M.</div>
+    <blockquote class="testimonial">
+      "Reliable delivery and excellent customer service. Highly recommend Farmers Market!"
+    </blockquote>
+    <div class="testimonial-author">— James L.</div>
+  </section>
+</main>
+
+<footer id="contact" aria-label="Footer with contact information and social links">
+  <div class="footer-socials">
+    <a href="#" aria-label="Facebook">📘</a>
+    <a href="#" aria-label="Twitter">🐦</a>
+    <a href="#" aria-label="Instagram">📸</a>
+  </div>
+  <div>© 2024 Farmers Market. All rights reserved.</div>
+</footer> -->
+
+<script>
+  function handleSearch(event) {
+    event.preventDefault();
+    const query = event.target.querySelector('.search-input').value.trim();
+    if (query) {
+      alert('Search submitted for: ' + query);
+      // Here you could integrate real search functionality
+    }
+  }
+</script>
+</body>
+</html>

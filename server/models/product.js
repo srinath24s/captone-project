@@ -4,6 +4,7 @@ const productSchema = new mongoose.Schema({
   pId:{
     type: String,
     default: uuid,
+    unique: true,
     trim:true
   },
   name: {

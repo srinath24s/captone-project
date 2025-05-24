@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Farmers Mart Giva - Login & Sign Up</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #88b04b, #558b2f);
+    color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    max-height: 800px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #auth-container {
+    background: #fff;
+    border-radius: 16px;
+    height: 600px;
+    width: 600px;
+    max-width: 95vw;
+    padding: 24px 28px 32px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 1.9rem;
+    margin-bottom: 8px;
+    text-align: center;
+    color: #33691e;
+  }
+
+  p.subtitle {
+    color: #558b2f;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    border: 1.8px solid #a5d6a7;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    border-color: #33691e;
+    outline: none;
+  }
+
+  button {
+    background: #558b2f;
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border: none;
+    padding: 14px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(85,139,47,0.6);
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #33691e;
+  }
+
+  .toggle-link {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #558b2f;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .toggle-link:hover {
+    text-decoration: underline;
+  }
+
+  .error {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  /* Responsive mobile adjustments */
+  @media (max-width: 360px) {
+    #auth-container {
+      width: 90vw;
+      padding: 20px 18px 28px;
+    }
+    h1 {
+      font-size: 1.65rem;
+    }
+    button {
+      font-size: 1.1rem;
+      padding: 12px 0;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      font-size: 0.9rem;
+      padding: 10px 12px;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="auth-container" role="main" aria-live="polite">
+  <h1 id="form-title">Farmers Mart Giva - Login</h1>
+  <p class="subtitle" id="form-subtitle">Welcome back! Please login to your account.</p>
+
+  <form id="auth-form" novalidate>
+    <div id="name-field" style="display:none;">
+      <input type="text" id="name" name="name" placeholder="Full Name (for Sign Up)" autocomplete="name" aria-label="Full Name" />
+    </div>
+
+    <input type="email" id="email" name="email" placeholder="Email Address" autocomplete="email" aria-label="Email Address" required />
+    <input type="password" id="password" name="password" placeholder="Password" autocomplete="current-password" aria-label="Password" required minlength="6" />
+    <div id="error-message" class="error" aria-live="assertive"></div>
+
+    <button type="submit" id="primary-button">Login</button>
+  </form>
+
+  <div class="toggle-link" id="toggle-link" role="button" tabindex="0" aria-pressed="false">
+    Don't have an account? Sign Up
+  </div>
+</div>
+
+<script>
+  (function(){
+    const formTitle = document.getElementById('form-title');
+    const formSubtitle = document.getElementById('form-subtitle');
+    const authForm = document.getElementById('auth-form');
+    const nameField = document.getElementById('name-field');
+    const toggleLink = document.getElementById('toggle-link');
+    const primaryButton = document.getElementById('primary-button');
+    const errorMessage = document.getElementById('error-message');
+
+    let isLogin = true;
+
+    function clearErrors() {
+      errorMessage.textContent = '';
+    }
+
+    function validateEmail(email) {
+      // Simple email regex
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    function validateForm() {
+      clearErrors();
+      let valid = true;
+      const email = authForm.email.value.trim();
+      const password = authForm.password.value;
+
+      if (!validateEmail(email)) {
+        errorMessage.textContent = 'Please enter a valid email address.';
+        valid = false;
+      } else if (password.length < 6) {
+        errorMessage.textContent = 'Password must be at least 6 characters long.';
+        valid = false;
+      }
+      if (!isLogin) {
+        const name = authForm.name.value.trim();
+        if (name.length < 3) {
+          errorMessage.textContent = 'Full Name must be at least 3 characters.';
+          valid = false;
+        }
+      }
+      return valid;
+    }
+
+    function toggleForm() {
+      isLogin = !isLogin;
+      clearErrors();
+      if (isLogin) {
+        formTitle.textContent = 'Farmers Mart Giva - Login';
+        formSubtitle.textContent = 'Welcome back! Please login to your account.';
+        nameField.style.display = 'none';
+        primaryButton.textContent = 'Login';
+        toggleLink.textContent = "Don't have an account? Sign Up";
+        toggleLink.setAttribute('aria-pressed', 'false');
+        authForm.password.setAttribute('autocomplete', 'current-password');
+      } else {
+        formTitle.textContent = 'Farmers Mart Giva - Sign Up';
+        formSubtitle.textContent = 'Create a new account to start shopping.';
+        nameField.style.display = 'block';
+        primaryButton.textContent = 'Sign Up';
+        toggleLink.textContent = 'Already have an account? Login';
+        toggleLink.setAttribute('aria-pressed', 'true');
+        authForm.password.setAttribute('autocomplete', 'new-password');
+      }
+      authForm.reset();
+      authForm.email.focus();
+    }
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!validateForm()) return;
+
+      // For demo: simulate login/signup success
+      clearErrors();
+      if (isLogin) {
+        alert('Login successful! Welcome back to Farmers Mart Giva.');
+      } else {
+        alert('Sign Up successful! Welcome to Farmers Mart Giva.');
+      }
+      authForm.reset();
+      authForm.email.focus();
+    });
+
+    toggleLink.addEventListener('click', toggleForm);
+    toggleLink.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleForm();
+      }
+    });
+
+  })();
+</script>
+</body>
+</html>
+
